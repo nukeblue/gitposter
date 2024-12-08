@@ -1,0 +1,20 @@
+name: Skeet to BlueSky on PR Merge
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  post_to_bluesky:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skeet to BlueSky
+        uses: myConsciousness/bluesky-post@v5
+        with:
+          text: |
+            ${{ github.event.pull_request.title }}
+            -- ${{ github.event.pull_request.body }}
+          identifier: ${{ secrets.BSKY_IDENTIFIER }}
+          password: ${{ secrets.BSKY_PASSWORD }}
